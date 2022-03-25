@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="IRIS for Windows (x86-64) 2022.1 (Build 133U)" ts="2022-03-25 14:53:33">
+<Class name="SCHOOL.SQL">
+<Super>%RegisteredObject</Super>
+<TimeChanged>66193,41982.056224</TimeChanged>
+<TimeCreated>66193,36027.135689</TimeCreated>
+
+<Method name="InsertStuSQL">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>stuName,age,sex</FormalSpec>
+<Implementation><![CDATA[
+	&SQL(
+		INSERT INTO SCHOOL.Student
+		(
+			STU_Name, STU_Age, STU_Sex
+		) 
+		VALUES 
+		(
+			:stuName, :age, :sex
+		)
+	)
+	q:(SQLCODE '= 0) SQLCODE 
+	q %ROWID
+]]></Implementation>
+</Method>
+
+<Method name="InsertSubjSQL">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>stuId,subject,score</FormalSpec>
+<Implementation><![CDATA[
+	&SQL(
+		INSERT INTO SCHOOL.StuScore
+		(
+			STUS_PARREF, STUS_Subject, STUS_Score
+		) 
+		VALUES 
+		(
+			:stuId, :subject, :score
+		)
+	)
+	q:(SQLCODE '= 0) SQLCODE 
+	q %ROWID
+]]></Implementation>
+</Method>
+
+<Method name="UpdateScoreSQL">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>stusId,score</FormalSpec>
+<Implementation><![CDATA[
+	&SQL(
+		UPDATE SCHOOL.StuScore 
+		SET 
+			STUS_Score = :score
+		WHERE 
+			STUS_RowId = :stusId
+	)
+	q:(SQLCODE '= 0) SQLCODE 
+	q %ROWID
+]]></Implementation>
+</Method>
+</Class>
+</Export>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="IRIS for Windows (x86-64) 2022.1 (Build 133U)" ts="2022-03-25 14:53:33">
+<Class name="SCHOOL.Data">
+<Super>%RegisteredObject</Super>
+<TimeChanged>66193,42100.974884</TimeChanged>
+<TimeCreated>66193,35917.300949</TimeCreated>
+
+<Method name="GetInitSutdentInfo">
+<Description>
+w ##Class(SCHOOL.Data).GetInitSutdentInfo().%ToJSON()</Description>
+<ClassMethod>1</ClassMethod>
+<Implementation><![CDATA[
+	s subjectArr = ["Chinese", "maths", "art", "music"]
+	s subjLen = subjectArr.%Size()
+	s dataArr = []
+	for i = 1:1:10 {
+		s stuName = "student" _ i
+		s sex = $s((i#2) : "M", 1 : "F")
+		s stuObj = {}
+		s stuObj.stuName = stuName
+		s stuObj.age = ..GetAge()
+		s stuObj.sex = sex 
+		s subjArr = []
+		for j = 0:1:(subjLen - 1) { 
+			s subject = subjectArr.%Get(j)
+		    s subjObj = {}
+		    s subjObj.subject = subject
+			s subjObj.score = ..GetScore() 
+			d subjArr.%Push(subjObj)
+		}
+		s stuObj.subjArr = subjArr
+		d dataArr.%Push(stuObj)    
+	}
+	q dataArr
+]]></Implementation>
+</Method>
+
+<Method name="GetStuData">
+<Description>
+w ##Class(SCHOOL.Data).GetStuData().%ToJSON()</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>stuId</FormalSpec>
+<Implementation><![CDATA[
+	s stuData = ^SCHOOL.StudentD(stuId)
+	s dataObj = {}
+	s dataObj.name = $lg(stuData, 2)
+	s dataObj.age  = $lg(stuData, 3)
+	s dataObj.sex  = ..GetSex($lg(stuData, 4))
+	q dataObj
+]]></Implementation>
+</Method>
+
+<Method name="GetSex">
+<Description>
+w ##Class(SCHOOL.Data).GetSex("F")</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>sex</FormalSpec>
+<Implementation><![CDATA[
+	q $S(
+		sex = "Male"   : sex,
+		sex = "Female" : sex,
+		sex = "M"      : "Male",
+		sex = "F"      : "Female",
+		1              : ""
+	)
+]]></Implementation>
+</Method>
+
+<Method name="GetSubjData">
+<Description>
+w ##Class(SCHOOL.Data).GetSubjData("7||3").%ToJSON()</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>stusId</FormalSpec>
+<Implementation><![CDATA[
+	s stuId = +stusId
+	s itm = $P(stusId, "||", 2)
+	s subjData = ^SCHOOL.StudentD(stuId, "SUBJ", itm)
+	s dataObj = {}
+	s dataObj.subject = $lg(subjData, 2)
+	s dataObj.score   = $lg(subjData, 3)
+	q dataObj
+]]></Implementation>
+</Method>
+
+<Method name="GetScore">
+<Description>
+w ##Class(SCHOOL.Data).GetInitSutdentInfo().%ToJSON()</Description>
+<ClassMethod>1</ClassMethod>
+<Implementation><![CDATA[	q $r(50) + 50
+]]></Implementation>
+</Method>
+
+<Method name="GetAge">
+<Description>
+w ##Class(SCHOOL.Data).GetInitSutdentInfo().%ToJSON()</Description>
+<ClassMethod>1</ClassMethod>
+<Implementation><![CDATA[	q $r(2) + 6
+]]></Implementation>
+</Method>
+
+<Method name="LogErr">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>error=""</FormalSpec>
+<Implementation><![CDATA[
+    if ($tlevel > 0) tro
+    l
+    q $tr($ze, "^", "~")
+]]></Implementation>
+</Method>
+
+<Method name="RetInfo">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>code,msg</FormalSpec>
+<Implementation><![CDATA[
+    s retObj = {}
+    s retObj.code = code
+    s retObj.msg = msg
+    q retObj
+]]></Implementation>
+</Method>
+
+<Method name="Parse">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>pData</FormalSpec>
+<Implementation><![CDATA[
+	q:$IsObject(pData) pData
+	if ($e(pData,1)="["){
+		s pObj=##class(%DynamicArray).%New()
+	}else{
+		s pObj=##class(%DynamicObject).%New()
+	}
+	s json=pObj.%FromJSON(pData)
+	q json
+]]></Implementation>
+</Method>
+</Class>
+</Export>

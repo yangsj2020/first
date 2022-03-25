@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="IRIS for Windows (x86-64) 2022.1 (Build 133U)" ts="2022-03-25 14:53:33">
+<Class name="SCHOOL.Query">
+<Super>SCHOOL.Data</Super>
+<TimeChanged>66193,52620.852146</TimeChanged>
+<TimeCreated>66193,35995.951196</TimeCreated>
+
+<Method name="QueryStuSubj">
+<Description>
+w ##Class(SCHOOL.Query).QueryStuSubj("{""student"":""student6"",""subject"":""art""}").%ToJSON()</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>pJsonStr:%String</FormalSpec>
+<Implementation><![CDATA[
+	s pJson = ..Parse(pJsonStr)
+	q:('$IsObject(pJson)) ..RetInfo(-1, "Please check the data")
+	s pStudent = pJson.student
+	s pSubject = pJson.subject
+	s DataArr = []
+	s student = ""
+	for {
+		s student = $O(^SCHOOL.StudentI("NAME",student))
+		q:(student = "")
+		continue:(pStudent '= "")&&(pStudent '= student)
+		s stuId = $O(^SCHOOL.StudentI("NAME", student, ""))
+		s stuObj = {}
+		s stuData = ..GetStuData(stuId)
+		s stuObj.stuData = stuData
+		s subjArr = []
+		s subject = ""
+		for {
+			s subject = $O(^SCHOOL.StuScoreI("Subject", stuId, subject))
+			q:(subject = "")
+			continue:(pSubject '= "")&&(pSubject '= subject)
+			s itm = $O(^SCHOOL.StuScoreI("Subject", stuId, subject, ""))
+			s stusId = stuId _ "||" _itm
+			d subjArr.%Push(..GetSubjData(stusId)) 
+		}
+		s stuObj.subjData = subjArr
+		d DataArr.%Push(stuObj)  
+	}
+	q DataArr
+]]></Implementation>
+</Method>
+
+<Method name="SortByScore">
+<Description>
+w ##Class(SCHOOL.Query).SortByScore("{""subject"":""art"",""passScore"":""60"",""order"":""1""}").%ToJSON()</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>pJsonStr:%String</FormalSpec>
+<Implementation><![CDATA[
+	s pJson = ..Parse(pJsonStr)
+	q:('$IsObject(pJson)) ..RetInfo(-1, "Please check the data")
+	s pSubject = pJson.subject
+	s passScore = pJson.passScore
+	s order = pJson.order
+	s order = $s(order = "" : 1, 1 : order)
+	q:(pSubject = "") ..RetInfo(-2, "Please check the subject")
+	s DataArr = []
+	
+	s subject = ""
+	for {
+		s subject = $O(^SCHOOL.StuScoreI("SubjScore", subject))
+		q:(subject = "")
+		continue:(pSubject '= "")&&(pSubject '= subject)
+		s score = ""
+		for {
+			s score = $O(^SCHOOL.StuScoreI("SubjScore", subject, score), order)
+			q:(score = "")
+			continue:(passScore '= "")&&(score < passScore)
+			s stuId = ""
+			for {
+				s stuId = $O(^SCHOOL.StuScoreI("SubjScore", subject, score, stuId))
+				q:(stuId = "")
+				s stuData = ..GetStuData(stuId)
+				s stuName = stuData.Name
+				s obj = {}
+				s obj.stuName = stuName
+				s obj.subject = subject
+				s obj.score = score
+				d DataArr.%Push(obj)
+			}
+		}
+	}
+	q DataArr
+]]></Implementation>
+</Method>
+</Class>
+</Export>
