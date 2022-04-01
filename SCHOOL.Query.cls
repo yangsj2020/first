@@ -1,16 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Export generator="Cache" version="25" zv="IRIS for Windows (x86-64) 2022.1 (Build 133U)" ts="2022-03-25 14:53:33">
-<Class name="SCHOOL.Query">
-<Super>SCHOOL.Data</Super>
-<TimeChanged>66193,52620.852146</TimeChanged>
-<TimeCreated>66193,35995.951196</TimeCreated>
+Class SCHOOL.Query Extends SCHOOL.Data
+{
 
-<Method name="QueryStuSubj">
-<Description>
-w ##Class(SCHOOL.Query).QueryStuSubj("{""student"":""student6"",""subject"":""art""}").%ToJSON()</Description>
-<ClassMethod>1</ClassMethod>
-<FormalSpec>pJsonStr:%String</FormalSpec>
-<Implementation><![CDATA[
+/// w ##Class(SCHOOL.Query).QueryStuSubj("{""student"":""student6"",""subject"":""art""}").%ToJSON()
+ClassMethod QueryStuSubj(pJsonStr As %String)
+{
 	s pJson = ..Parse(pJsonStr)
 	q:('$IsObject(pJson)) ..RetInfo(-1, "Please check the data")
 	s pStudent = pJson.student
@@ -39,15 +32,11 @@ w ##Class(SCHOOL.Query).QueryStuSubj("{""student"":""student6"",""subject"":""ar
 		d DataArr.%Push(stuObj)  
 	}
 	q DataArr
-]]></Implementation>
-</Method>
+}
 
-<Method name="SortByScore">
-<Description>
-w ##Class(SCHOOL.Query).SortByScore("{""subject"":""art"",""passScore"":""60"",""order"":""1""}").%ToJSON()</Description>
-<ClassMethod>1</ClassMethod>
-<FormalSpec>pJsonStr:%String</FormalSpec>
-<Implementation><![CDATA[
+/// w ##Class(SCHOOL.Query).SortByScore("{""subject"":""art"",""passScore"":""60"",""order"":""1""}").%ToJSON()
+ClassMethod SortByScore(pJsonStr As %String)
+{
 	s pJson = ..Parse(pJsonStr)
 	q:('$IsObject(pJson)) ..RetInfo(-1, "Please check the data")
 	s pSubject = pJson.subject
@@ -82,7 +71,7 @@ w ##Class(SCHOOL.Query).SortByScore("{""subject"":""art"",""passScore"":""60"","
 		}
 	}
 	q DataArr
-]]></Implementation>
-</Method>
-</Class>
-</Export>
+}
+
+}
+

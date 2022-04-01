@@ -1,15 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Export generator="Cache" version="25" zv="IRIS for Windows (x86-64) 2022.1 (Build 133U)" ts="2022-03-25 14:53:33">
-<Class name="SCHOOL.Operate">
-<Super>SCHOOL.Data,SCHOOL.SQL</Super>
-<TimeChanged>66193,53227.158032</TimeChanged>
-<TimeCreated>66193,35948.158793</TimeCreated>
+Class SCHOOL.Operate Extends (SCHOOL.Data, SCHOOL.SQL)
+{
 
-<Method name="InitSutdentInfo">
-<Description>
-w ##Class(SCHOOL.Operate).InitSutdentInfo().%ToJSON()</Description>
-<ClassMethod>1</ClassMethod>
-<Implementation><![CDATA[
+/// w ##Class(SCHOOL.Operate).InitSutdentInfo().%ToJSON()
+ClassMethod InitSutdentInfo()
+{
 	s $zt = "err"
 	ts
 	s stuArr = ..GetInitSutdentInfo()
@@ -37,15 +31,11 @@ w ##Class(SCHOOL.Operate).InitSutdentInfo().%ToJSON()</Description>
 err
     s err = ..LogErr()
     q ..RetInfo(-1, err)
-]]></Implementation>
-</Method>
+}
 
-<Method name="UpdateScore">
-<Description>
-w ##Class(SCHOOL.Operate).UpdateScore("{""student"":""student6"",""subject"":""art"",""score"":""99""}").%ToJSON()</Description>
-<ClassMethod>1</ClassMethod>
-<FormalSpec>pJsonStr</FormalSpec>
-<Implementation><![CDATA[
+/// w ##Class(SCHOOL.Operate).UpdateScore("{""student"":""student6"",""subject"":""art"",""score"":""99""}").%ToJSON()
+ClassMethod UpdateScore(pJsonStr)
+{
 	s $zt = "err"
 	ts
 	s pJson = ..Parse(pJsonStr)
@@ -67,7 +57,7 @@ w ##Class(SCHOOL.Operate).UpdateScore("{""student"":""student6"",""subject"":""a
 err
     s err = ..LogErr()
     q ..RetInfo(-1, err)
-]]></Implementation>
-</Method>
-</Class>
-</Export>
+}
+
+}
+
